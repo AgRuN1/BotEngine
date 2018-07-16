@@ -1,11 +1,7 @@
 from re import match
 
-def is_num(num):
-	try:
-		int(num)
-		return True
-	except ValueError:
-		return False
+def is_num(value):
+	return isinstance(value, int)
 
 def check_name(name):
 	if match('^.*__.*$', name): return False

@@ -1,15 +1,18 @@
 from sys import argv
+from importlib import util
 #получаем имя модуля для подключения, по-умолчанию vk_api
 try:
 	module_name = argv[1]
 except IndexError:
-	module_name = ''
-module_name = module_name or 'vk_api'
+	module_name = 'vkapi'
 
-try:
-	exec('from ' + module_name + ' import Api')
-except ImportError:
-	raise FileNotFoundError('Module ' + argv[1] + ' do not found!')
+spec = util.find_spec(module_name)
+if not spec:
+	raise FileNotFoundError('Module ' + module_name + ' do not found!')
+module = util.module_from_spec(spec)
+spec.loader.exec_module(module)
+Api = module.Api
+
 #дополнительные модули
 from time import sleep 
 from core.logger import log_error as logger

@@ -1,26 +1,21 @@
-from os import environ, path
-import django
-
-environ.setdefault("DJANGO_SETTINGS_MODULE", "config")
-django.setup()
-
+from os import path
 from chat_bot.models import Objects
-from chat_bot.models import Objects_Types as Types
-from chat_bot.models import Objects_Content as Content
-from chat_bot.models import Objects_Fields as Fields
-from chat_bot.models import User_Step as Steps
-from core.Bot_Object import Object as Bot_Object
+from chat_bot.models import ObjectsTypes as Types
+from chat_bot.models import ObjectsContent as Content
+from chat_bot.models import ObjectsFields as Fields
+from chat_bot.models import UserStep as Steps
+from core.BotObject import Object as BotObject
 from core.helpers import check_name
 from django.template.loader import get_template
 from core.logger import log_error
 from core.helpers import is_num
 
 try:
-	from Custom import Custom_Tools
+	from Custom import CustomTools
 except ImportError:
-	class Custom_Tools: pass
+	class CustomTools: pass
 
-class Tools(Custom_Tools):
+class Tools(CustomTools):
 
 	def __init__(self, path: str = '.') -> None:
 		"""Указывает путь к исполняемому файлу"""
@@ -42,7 +37,7 @@ class Tools(Custom_Tools):
 			current_objects = Objects.objects.filter(id = object_id)
 			if len(current_objects) == 0:
 				return False
-			return Bot_Object(current_objects[0])
+			return BotObject(current_objects[0])
 		if not(type_id):
 			type_id = self.get_type_id(type_name)
 		if not(self.check_type_id(type_id)):

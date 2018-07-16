@@ -5,9 +5,9 @@ environ.setdefault("DJANGO_SETTINGS_MODULE", "config")
 django.setup()
 
 from chat_bot.models import Objects
-from chat_bot.models import Objects_Types as Types
-from chat_bot.models import Objects_Content as Content
-from chat_bot.models import Objects_Fields as Fields
+from chat_bot.models import ObjectsTypes as Types
+from chat_bot.models import ObjectsContent as Content
+from chat_bot.models import ObjectsFields as Fields
 from core.helpers import is_num, check_name
 
 def check_field_id(field_func: 'def') -> 'def':
@@ -39,7 +39,10 @@ class Object:
 		current_values = Content.objects.filter(obj_id=self.object.id, field_id=field_id)
 		if len(current_values) > 0:
 			current_value = current_values[0]
-			current_value.value = value
+			if is_num(value):
+				current_values.value_integer = value
+			else:
+				current_value.value_string = value
 			current_value.save()
 			return current_value.id
 		if is_num(value):
